@@ -6,7 +6,7 @@ read -r file
 if [ -f "$file" ]; then
     echo "Processing image..."
 
-    if python scanner.py "$file"; then
+    if .venv/bin/python scanner.py "$file"; then
         echo "Event extracted successfully!"
     else
         echo "Event extraction failed."

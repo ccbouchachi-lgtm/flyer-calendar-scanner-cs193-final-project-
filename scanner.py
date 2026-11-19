@@ -4,6 +4,8 @@ import sys
 import json
 from pathlib import Path
 from google import genai
+from datetime import datetime
+current_year = datetime.now().year
 
 
 # 1. Get and validate the image path
@@ -61,14 +63,17 @@ event_schema = {
 
 # 4. Define Gemini's instructions
 
-system_instruction = """
+system_instruction = f"""
 You are an event information extraction assistant.
 
 1. Extract only information explicitly visible or clearly stated in the flyer.
-2. Never invent, assume, or guess missing information.
+2. Never invent, assume, or guess missing information, except for the year as specified below.
 3. If a field is missing or unclear, return null.
 4. Preserve the original event title and organization name.
-5. Use YYYY-MM-DD when the complete date is available.
+5. Always return dates in YYYY-MM-DD format.
+   If the flyer specifies a year, use that year.
+   If the flyer does not specify a year, use {current_year}.
+   Never invent a missing month or day.
 6. Use HH:MM for times.
 7. Distinguish start time from end time.
 8. Include the venue, building, room, or address.
